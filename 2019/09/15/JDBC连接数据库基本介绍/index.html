@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":false,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="JDBC步骤 注册驱动/加载驱动 1Class.forName(&quot;com.mysql.jdbc.Driver&quot;);  获取连接对象 1234// getConnection(url jdbc:mysql://[hostname]:[port]/[dbname]/[encode_format])Connection conn = null;	//需要在try块外声明,否则在finally里无法关闭/">
+<meta name="keywords" content="jdbc,java.sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDBC连接数据库基本介绍">
+<meta property="og:url" content="https://blog.vicker.cn/2019/09/15/JDBC连接数据库基本介绍/index.html">
+<meta property="og:site_name" content="KitBar">
+<meta property="og:description" content="JDBC步骤 注册驱动/加载驱动 1Class.forName(&quot;com.mysql.jdbc.Driver&quot;);  获取连接对象 1234// getConnection(url jdbc:mysql://[hostname]:[port]/[dbname]/[encode_format])Connection conn = null;	//需要在try块外声明,否则在finally里无法关闭/">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-15T15:26:16.945Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JDBC连接数据库基本介绍">
+<meta name="twitter:description" content="JDBC步骤 注册驱动/加载驱动 1Class.forName(&quot;com.mysql.jdbc.Driver&quot;);  获取连接对象 1234// getConnection(url jdbc:mysql://[hostname]:[port]/[dbname]/[encode_format])Connection conn = null;	//需要在try块外声明,否则在finally里无法关闭/">
+  <link rel="canonical" href="https://blog.vicker.cn/2019/09/15/JDBC连接数据库基本介绍/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>JDBC连接数据库基本介绍 | KitBar</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KitBar</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">四月は君の嘘</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/virualv" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://blog.vicker.cn/2019/09/15/JDBC连接数据库基本介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="virualv">
+      <meta itemprop="description" content="A new kitbar blog site!">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KitBar">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">JDBC连接数据库基本介绍
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-09-15 23:11:33 / Modified: 23:26:16" itemprop="dateCreated datePublished" datetime="2019-09-15T23:11:33+08:00">2019-09-15</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li><p>注册驱动/加载驱动</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取连接对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// getConnection(url jdbc:mysql://[hostname]:[port]/[dbname]/[encode_format])</span></span><br><span class="line">Connection conn = <span class="keyword">null</span>;	<span class="comment">//需要在try块外声明,否则在finally里无法关闭</span></span><br><span class="line"><span class="comment">//获取连接器对象</span></span><br><span class="line">conn = DriverManager.getConnection(<span class="string">"jdbc:mysql://127.0.0.1:3306/bookmanagement?useUnicode=true&amp;charaterEncoding=utf8"</span>,<span class="string">"root"</span>,<span class="string">"root"</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol><a id="more"></a>
+<p><em>注：导包导的是java.sql.Connection、java.sql.DriverManager</em></p>
+<ol start="3">
+<li>获取sql执行器对象Statement/PreparedStatement</li>
+</ol>
+<p><strong>Statement后期不会常用，有sql注入的风险</strong></p>
+<p>Statement写法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Statement st = <span class="keyword">null</span>;	<span class="comment">//需要在try块外声明,否则在finally里无法关闭</span></span><br><span class="line"><span class="comment">//下面代码需要放在try块里</span></span><br><span class="line">st = conn.createStatement();</span><br></pre></td></tr></table></figure>
+
+<p>PreparedStatement写法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PreparedStatement pst = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>执行并返回处理结果<blockquote>
+<p>增、删、改、返回的受影响的行数 int整数值executeUpdate()查询，返回的结果及对象ResultSet对象，返回的是一个集合executeQuery()</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>Statement后期不会常用，有sql注入的风险</strong><br>Statement写法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ResultSet rs = <span class="keyword">null</span>;	<span class="comment">//需要在try块外声明,否则在finally里无法关闭</span></span><br><span class="line"><span class="comment">//下面代码需要放在try块里</span></span><br><span class="line">String sql = <span class="string">"select * from bookmanager"</span>;</span><br><span class="line">rs = st.executeQuery(sql);</span><br><span class="line"><span class="keyword">while</span> (rs.next)&#123;</span><br><span class="line">	System.out.println(rs.getInt(<span class="string">"t_stuNo"</span>+<span class="string">"\t"</span>+rs.getString(<span class="string">"t_stuName"</span>)</span><br><span class="line">                       +<span class="string">"\t"</span>+rs.getInt(<span class="string">"t_classId"</span>)+<span class="string">"\t"</span>+rs.getInt(<span class="string">"t_score"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PreparedStatement写法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//获取sql执行器对象</span></span><br><span class="line">String sql = <span class="string">"insert into t_user(t_userName,t_pwd) values(?,?)"</span>;</span><br><span class="line">pst = conn.preparedStatement(sql);</span><br><span class="line"><span class="comment">//设置占位符</span></span><br><span class="line">pst.setString(<span class="number">1</span>,username);</span><br><span class="line">pst.setString(<span class="number">2</span>,pwd);</span><br><span class="line"><span class="comment">//执行并返回处理结果</span></span><br><span class="line">rs.pst.executeQuery();</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>释放资源<blockquote>
+<p>关闭顺序1: ResultSet rs —&gt; Statement/PreparedStatement —&gt; Connection（查询的关闭）</p>
+<p>关闭顺序2: Statement/PreparedStatement —&gt; Connection (增，删，改的关闭)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 每一个需要异常捕获</span></span><br><span class="line"><span class="keyword">if</span> (rs != <span class="keyword">null</span>)&#123;</span><br><span class="line">	rs.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (st != <span class="keyword">null</span>)&#123;</span><br><span class="line">	st.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (conn != <span class="keyword">null</span>)&#123;</span><br><span class="line">	conn.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (rs != <span class="keyword">null</span>)&#123;</span><br><span class="line">	rs.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (pst != <span class="keyword">null</span>)&#123;</span><br><span class="line">	pst.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (conn != <span class="keyword">null</span>)&#123;</span><br><span class="line">	conn.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JdbcUtil"><a href="#JdbcUtil" class="headerlink" title="JdbcUtil"></a>JdbcUtil</h3><p>需要定义下面两个属性：</p>
+<ul>
+<li>属性1 ： DataSource ds = null</li>
+<li>属性2 ： ThreadLocal<connection> threadLocal = new  ThreadLocal<connection>();</connection></connection></li>
+</ul>
+<ol>
+<li>静态代码块中（加载配置文件、从连接池中拿数据源对象，</li>
+<li>获取连接对象并存储在线程里</li>
+<li>关闭连接对象，移除线程</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> DataSource ds = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal threadLocal = <span class="keyword">new</span> ThreadLocal();</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    Properties p = <span class="keyword">new</span> Properties();</span><br><span class="line">    p.load(JdbcUtil.class.getClassLoader.getResourceAsStream(<span class="string">"datasource.properties"</span>));</span><br><span class="line"></span><br><span class="line">    ds = BaseDataSourceFactory.createDataSource(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Connection conn = threadLocal.get();</span><br><span class="line">    <span class="keyword">if</span>(conn == <span class="keyword">null</span>)&#123;</span><br><span class="line">        conn = ds.getConnection();</span><br><span class="line">    	threadLocal.set(conn);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> threadLocal.get();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Connection conn = threadLocal.get();</span><br><span class="line">    <span class="keyword">if</span> (conn != <span class="keyword">null</span>)&#123;</span><br><span class="line">            conn.close();</span><br><span class="line">    threadLocal.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">(ResultSet rs,PreparedStatement pst)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (rs != <span class="keyword">null</span>)&#123;</span><br><span class="line">        rs.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (pst != <span class="keyword">null</span>)&#123;</span><br><span class="line">        pst.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JdbcTemplate"><a href="#JdbcTemplate" class="headerlink" title="JdbcTemplate"></a>JdbcTemplate</h3><ul>
+<li>这个类主要有三个方法：</li>
+</ul>
+<ol>
+<li>设置sql语句中的参数  主要参数pst 和 Object…params</li>
+<li>实现增、删、改，即 executeUpdate()  主要参数 sql 、Object…params</li>
+<li>实现查，即executeQuery() 主要参数 sql 、RowMapper mapper、Object…params</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcTemplate</span></span>&#123;</span><br><span class="line">	<span class="comment">//1.设置占位符</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setParams</span><span class="params">(PreparedStatement pst,Object...params)</span> <span class="keyword">throws</span> SQLException</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (params!=<span class="keyword">null</span> &amp;&amp; params.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; params.length;i++)&#123;</span><br><span class="line">				pst.setObject(i+<span class="number">1</span>,params[i]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//增、删、改</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">executeUpdate</span><span class="params">(String sql,Object..params)</span> <span class="keyword">throws</span> SQLException</span>&#123;</span><br><span class="line">		<span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">		<span class="comment">//获取连接对象</span></span><br><span class="line">		Connection conn = JdbcUtil.getConnection();</span><br><span class="line">		PreparedStatement pst = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//获取SQL执行器</span></span><br><span class="line">			pst = conn.perparedStatement(sql);</span><br><span class="line">			</span><br><span class="line">			setParams(pst,params);</span><br><span class="line">			count = pst.executeUpdate();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			<span class="keyword">throw</span> e;</span><br><span class="line">		&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">			JdbcUtil.close(<span class="keyword">null</span>,pst);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List <span class="title">executeQuery</span><span class="params">(String sql,RowMapper mapper,object..params)</span> <span class="keyword">throws</span> SQLException</span>&#123;</span><br><span class="line">		List list = <span class="keyword">new</span> List();</span><br><span class="line">		<span class="comment">//获取连接对象</span></span><br><span class="line">		Connection conn = JdbcUtil.getConnection();</span><br><span class="line">		PreparedStatement pst = <span class="keyword">null</span>;</span><br><span class="line">		ResultSet rs = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//获取SQL执行器</span></span><br><span class="line">			pst = conn.perparedStatement(sql);</span><br><span class="line">			</span><br><span class="line">			setParams(pst,params);</span><br><span class="line">			rs = pst.executeQuery();</span><br><span class="line">			<span class="keyword">while</span>(rs.next())&#123;</span><br><span class="line">				Object obj = mapper.mapperObj(rs);</span><br><span class="line">				list.add(obj);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (SQLException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			<span class="keyword">throw</span> e;</span><br><span class="line">		&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">			JdbcUtil.close(rs,pst);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> list;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/jdbc-java-sql/" rel="tag"># jdbc,java.sql</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/15/单节点和分布式登录会话问题/" rel="next" title="单节点和分布式登录会话问题">
+                  <i class="fa fa-chevron-left"></i> 单节点和分布式登录会话问题
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/15/git使用手记/" rel="prev" title="git使用手记">
+                  git使用手记 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JDBC"><span class="nav-number">1.</span> <span class="nav-text">JDBC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">1.1.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JdbcUtil"><span class="nav-number">1.1.1.</span> <span class="nav-text">JdbcUtil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JdbcTemplate"><span class="nav-number">1.1.2.</span> <span class="nav-text">JdbcTemplate</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">virualv</p>
+  <div class="site-description" itemprop="description">A new kitbar blog site!</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/virualv" title="GitHub &rarr; https://github.com/virualv" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:virualv@gmail.com" title="E-Mail &rarr; mailto:virualv@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/virualv" title="Twitter &rarr; https://twitter.com/virualv" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://www.facebook.com/virualv" title="FB Page &rarr; https://www.facebook.com/virualv" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://instagram.com/virualv" title="Instagram &rarr; https://instagram.com/virualv" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">virualv</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
