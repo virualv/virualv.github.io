@@ -56,14 +56,14 @@
 </script>
 
   <meta name="description" content="服务端登录验证问题简解 单服务器 Tomcat  session保存浏览器和服务器的会话信息 用户登录后，生成一个session，会分配一个SESSIONID 客户端会把session保存到cookie中，每次发送请求是会携带sessionI让服务端去校验   分布式session共享  Tomcat支持session共享，但会有广播风暴  使用redis存储token 服务端通过UUID，生成6">
-<meta name="keywords" content="tomcat,distributed">
+<meta name="keywords" content="tomcat,web,distributed">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单节点和分布式登录会话问题">
 <meta property="og:url" content="https://blog.vicker.cn/2019/09/15/单节点和分布式登录会话问题/index.html">
 <meta property="og:site_name" content="KitBar">
 <meta property="og:description" content="服务端登录验证问题简解 单服务器 Tomcat  session保存浏览器和服务器的会话信息 用户登录后，生成一个session，会分配一个SESSIONID 客户端会把session保存到cookie中，每次发送请求是会携带sessionI让服务端去校验   分布式session共享  Tomcat支持session共享，但会有广播风暴  使用redis存储token 服务端通过UUID，生成6">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-15T15:26:16.965Z">
+<meta property="og:updated_time" content="2019-09-16T14:08:03.359Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单节点和分布式登录会话问题">
 <meta name="twitter:description" content="服务端登录验证问题简解 单服务器 Tomcat  session保存浏览器和服务器的会话信息 用户登录后，生成一个session，会分配一个SESSIONID 客户端会把session保存到cookie中，每次发送请求是会携带sessionI让服务端去校验   分布式session共享  Tomcat支持session共享，但会有广播风暴  使用redis存储token 服务端通过UUID，生成6">
@@ -261,12 +261,33 @@
                 
               
 
-              <time title="Created: 2019-09-15 23:08:21 / Modified: 23:26:16" itemprop="dateCreated datePublished" datetime="2019-09-15T23:08:21+08:00">2019-09-15</time>
+              <time title="Created: 2019-09-15 23:08:21" itemprop="dateCreated datePublished" datetime="2019-09-15T23:08:21+08:00">2019-09-15</time>
             </span>
           
             
 
             
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-09-16 22:08:03" itemprop="dateModified" datetime="2019-09-16T22:08:03+08:00">2019-09-16</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -314,7 +335,11 @@
           
           <div class="post-tags">
             
-              <a href="/tags/tomcat-distributed/" rel="tag"># tomcat,distributed</a>
+              <a href="/tags/tomcat/" rel="tag"># tomcat</a>
+            
+              <a href="/tags/web/" rel="tag"># web</a>
+            
+              <a href="/tags/distributed/" rel="tag"># distributed</a>
             
           </div>
         
@@ -407,11 +432,28 @@
     
       
       
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
       <div class="site-state-item site-state-tags">
         
-        <span class="site-state-item-count">13</span>
-        <span class="site-state-item-name">tags</span>
+          
+            <a href="/tags/">
+          
         
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
       </div>
     
   </nav>
