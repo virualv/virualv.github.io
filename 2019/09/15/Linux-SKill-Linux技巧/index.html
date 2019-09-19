@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="KitBar">
 <meta property="og:description" content="1. apt 静默更新 1apt-get update -qq">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-16T14:08:03.349Z">
+<meta property="og:updated_time" content="2019-09-19T14:50:39.476Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux SKill(Linux技巧)">
 <meta name="twitter:description" content="1. apt 静默更新 1apt-get update -qq">
@@ -272,7 +272,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-09-16 22:08:03" itemprop="dateModified" datetime="2019-09-16T22:08:03+08:00">2019-09-16</time>
+                <time title="Modified: 2019-09-19 22:50:39" itemprop="dateModified" datetime="2019-09-19T22:50:39+08:00">2019-09-19</time>
               </span>
             
           
@@ -419,6 +419,18 @@
 
 <p><em>动作说明： [n1[,n2]]</em></p>
 <pre><code>动作：n1, n2 ：不一定存在，一般代表选择进行动作的行数，比如，如果我的动作是需要在 10 到 20 行之间进行的，则10,20[动作行为]</code></pre><h4 id="动作："><a href="#动作：" class="headerlink" title="动作："></a>动作：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！</span></span><br><span class="line"><span class="meta">#</span><span class="bash">d ：删除，因为是删除啊，所以 d 后面通常不接任何咚咚；</span></span><br><span class="line">	sed  "3d"  file  #  删除第三行</span><br><span class="line">	sed  "1,3d"  # 删除前三行</span><br><span class="line">	sed  "1d;3d;5d"  # 删除1、3、5行</span><br><span class="line">	sed  "/^$/d" #删除空行   </span><br><span class="line">	sed  "/abc/d" #删除所有含有abc的行</span><br><span class="line">	sed  "/abc/，/def/d" #删除abc 和 def 之间的行，包括其自身</span><br><span class="line">	sed  "1，/def/d" #删除第一行到 def 之间的行，包括其自身</span><br><span class="line">	sed  "/abc/，+3d " # 删除含有abc的行之后，在删除3行</span><br><span class="line">	sed  "/abc/，～3d" #从含有abc的行开始，共删除3行</span><br><span class="line">	sed  "1~2d"  # 从第1行开始，每2行删除一行， 删除奇数行</span><br><span class="line">	sed  "2~2d"  # 从第2行开始，每2行删除一行， 删除奇数行</span><br><span class="line">	sed  "\$d"  # 删除最后一行</span><br><span class="line">	sed  "/dd\|cc/d"  删除有dd或者cc的行</span><br><span class="line">	</span><br><span class="line"><span class="meta">#</span><span class="bash">i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；</span></span><br><span class="line"><span class="meta">#</span><span class="bash">p ：列印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行</span></span><br><span class="line">	</span><br><span class="line">	sed -n  "3p"  file  #  显示第三行</span><br><span class="line">	sed -n  "1,3p"  # 显示前三行</span><br><span class="line">	sed -n  "2,+3p"  # 显示第二行，及后面的三行</span><br><span class="line">	sed -n  "\$p"  # 显示最后一行</span><br><span class="line">	sed -n "1p;3p;5p"  # 只显示文件1、3、5行</span><br><span class="line">	sed -n  "$="  # 显示文件行数</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">s ：替换，可以直接进行取代的工作。通常这个 s 的动作可以搭配正规表示法，例如 1,20s/old/new/g</span></span><br><span class="line">	</span><br><span class="line">	's/old/new/g'  </span><br><span class="line">	</span><br><span class="line">	sed  "s/\(all\)/bb/"</span><br><span class="line">	sed -r "s/(all)/bb/"</span><br></pre></td></tr></table></figure>
+
+<h2 id="14-执行apt时-出现E-无法获得锁-var-lib-apt-lists-lock-open的问题"><a href="#14-执行apt时-出现E-无法获得锁-var-lib-apt-lists-lock-open的问题" class="headerlink" title="14. 执行apt时,出现E: 无法获得锁 /var/lib/apt/lists/lock - open的问题"></a>14. 执行apt时,出现E: 无法获得锁 /var/lib/apt/lists/lock - open的问题</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure>
+
+<p>出现</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E: 无法获得锁 /var/lib/apt/lists/lock - open</span><br></pre></td></tr></table></figure>
+
+<p>一般来说是你的用户权限不够所致，可以sudo解决，或直接使用root账户执行。</p>
+<p>如果还是无法解决可尝试下面方式解决；</p>
+<p>解决方法 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /var/lib/apt/lists/lock</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -510,7 +522,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-apt"><span class="nav-number">1.</span> <span class="nav-text">1. apt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-aptitude"><span class="nav-number">2.</span> <span class="nav-text">2. aptitude</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-利用cat添加文本文件"><span class="nav-number">3.</span> <span class="nav-text">3. 利用cat添加文本文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-apt卸载文件时，出现的问题"><span class="nav-number">4.</span> <span class="nav-text">4. apt卸载文件时，出现的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Ubuntu-输入正确密码却无法进入桌面"><span class="nav-number">5.</span> <span class="nav-text">5. Ubuntu 输入正确密码却无法进入桌面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-获取Ubuntu本地IP地址"><span class="nav-number">6.</span> <span class="nav-text">6. 获取Ubuntu本地IP地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-修改-etc-sudoers-文件格式错误，导致无法使用sudo"><span class="nav-number">7.</span> <span class="nav-text">7. 修改/etc/sudoers 文件格式错误，导致无法使用sudo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-LVM修改卷组名后忘记修改fstab，导致重启失败"><span class="nav-number">8.</span> <span class="nav-text">8. LVM修改卷组名后忘记修改fstab，导致重启失败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Linux-apt安装弹窗设置干扰自动化安装"><span class="nav-number">9.</span> <span class="nav-text">9. Linux apt安装弹窗设置干扰自动化安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-vim快捷注释方法"><span class="nav-number">10.</span> <span class="nav-text">10. vim快捷注释方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-mariadb普通用户无法登录的问题"><span class="nav-number">11.</span> <span class="nav-text">11. mariadb普通用户无法登录的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Docker修改镜像默认存储位置"><span class="nav-number">12.</span> <span class="nav-text">12. Docker修改镜像默认存储位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-ln-find-du-sed命令使用简介"><span class="nav-number">13.</span> <span class="nav-text">13. ln,find,du,sed命令使用简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#find命令"><span class="nav-number">13.1.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#du"><span class="nav-number">13.2.</span> <span class="nav-text">du</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-流编辑器，一次处理一行内容"><span class="nav-number">13.3.</span> <span class="nav-text">sed : 流编辑器，一次处理一行内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#复制代码"><span class="nav-number">13.3.1.</span> <span class="nav-text">复制代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选项与参数："><span class="nav-number">13.3.2.</span> <span class="nav-text">选项与参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动作："><span class="nav-number">13.3.3.</span> <span class="nav-text">动作：</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-apt"><span class="nav-number">1.</span> <span class="nav-text">1. apt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-aptitude"><span class="nav-number">2.</span> <span class="nav-text">2. aptitude</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-利用cat添加文本文件"><span class="nav-number">3.</span> <span class="nav-text">3. 利用cat添加文本文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-apt卸载文件时，出现的问题"><span class="nav-number">4.</span> <span class="nav-text">4. apt卸载文件时，出现的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Ubuntu-输入正确密码却无法进入桌面"><span class="nav-number">5.</span> <span class="nav-text">5. Ubuntu 输入正确密码却无法进入桌面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-获取Ubuntu本地IP地址"><span class="nav-number">6.</span> <span class="nav-text">6. 获取Ubuntu本地IP地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-修改-etc-sudoers-文件格式错误，导致无法使用sudo"><span class="nav-number">7.</span> <span class="nav-text">7. 修改/etc/sudoers 文件格式错误，导致无法使用sudo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-LVM修改卷组名后忘记修改fstab，导致重启失败"><span class="nav-number">8.</span> <span class="nav-text">8. LVM修改卷组名后忘记修改fstab，导致重启失败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Linux-apt安装弹窗设置干扰自动化安装"><span class="nav-number">9.</span> <span class="nav-text">9. Linux apt安装弹窗设置干扰自动化安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-vim快捷注释方法"><span class="nav-number">10.</span> <span class="nav-text">10. vim快捷注释方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-mariadb普通用户无法登录的问题"><span class="nav-number">11.</span> <span class="nav-text">11. mariadb普通用户无法登录的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Docker修改镜像默认存储位置"><span class="nav-number">12.</span> <span class="nav-text">12. Docker修改镜像默认存储位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-ln-find-du-sed命令使用简介"><span class="nav-number">13.</span> <span class="nav-text">13. ln,find,du,sed命令使用简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#find命令"><span class="nav-number">13.1.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#du"><span class="nav-number">13.2.</span> <span class="nav-text">du</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-流编辑器，一次处理一行内容"><span class="nav-number">13.3.</span> <span class="nav-text">sed : 流编辑器，一次处理一行内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#复制代码"><span class="nav-number">13.3.1.</span> <span class="nav-text">复制代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选项与参数："><span class="nav-number">13.3.2.</span> <span class="nav-text">选项与参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动作："><span class="nav-number">13.3.3.</span> <span class="nav-text">动作：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-执行apt时-出现E-无法获得锁-var-lib-apt-lists-lock-open的问题"><span class="nav-number">14.</span> <span class="nav-text">14. 执行apt时,出现E: 无法获得锁 /var/lib/apt/lists/lock - open的问题</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -525,7 +537,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -538,7 +550,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -551,7 +563,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
